@@ -88,7 +88,11 @@ abstract class BaseCacheManager {
     var cacheFile = await getFileFromCache(url);
     if (cacheFile != null) {
       if (cacheFile.validTill.isBefore(DateTime.now())) {
-        webHelper.downloadFile(url, authHeaders: headers);
+        try {
+          webHelper.downloadFile(url, authHeaders: headers);
+        } catch (e) {
+          return null;
+        }
       }
       return cacheFile.file;
     }
